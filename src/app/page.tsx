@@ -9,7 +9,6 @@ import MatchupSelector, { getTeamFlag } from "@/components/MatchupSelector";
 import GoalVisualization, { SVG_W, SVG_H } from "@/components/GoalVisualization";
 import PenaltyAnimation from "@/components/PenaltyAnimation";
 import ResultDisplay from "@/components/ResultDisplay";
-import PlayerStats from "@/components/PlayerStats";
 import PressureToggle from "@/components/PressureToggle";
 import FootballerQuote from "@/components/FootballerQuote";
 import { TakerSideStats, KeeperSideStats } from "@/components/SideStats";
@@ -217,7 +216,7 @@ export default function Home() {
       {matchupConfirmed && taker && keeper && (
         <section
           ref={arenaRef}
-          className="relative flex flex-col items-center min-h-screen px-4 py-10 gap-8 overflow-hidden"
+          className="relative flex flex-col items-center min-h-screen px-4 py-6 gap-5 overflow-hidden"
         >
           {/* Stadium ambience background */}
           <div
@@ -284,24 +283,15 @@ export default function Home() {
           </div>
 
           {/* Result — broadcast lower-third */}
-          <div className="relative z-10 min-h-[60px] w-full max-w-[640px]">
+          <div className="relative z-10 min-h-[56px] w-full max-w-[640px]">
             <ResultDisplay outcome={result?.outcome ?? null} visible={showResult} />
           </div>
 
-          {/* Stats */}
-          <div className="relative z-10">
-            <PlayerStats
-              taker={taker}
-              keeper={keeper}
-              scoreProbability={scoreProbability}
-            />
-          </div>
-
           {/* Action buttons */}
-          <div className="relative z-10 flex gap-4 mt-2">
+          <div className="relative z-10 flex items-center gap-4">
             <button
               onClick={handleReselect}
-              className="px-6 py-4 rounded-full border border-white/10 text-foreground/40 font-heading text-base tracking-wider transition-all duration-200 hover:border-white/20 hover:text-foreground/60"
+              className="px-5 py-3 rounded-full border border-white/10 text-foreground/40 font-heading text-sm tracking-wider transition-all duration-200 hover:border-white/20 hover:text-foreground/60"
             >
               RE-SELECT
             </button>
@@ -314,11 +304,24 @@ export default function Home() {
             </button>
             <button
               onClick={handleClear}
-              className="px-6 py-4 rounded-full border border-white/10 text-foreground/40 font-heading text-base tracking-wider transition-all duration-200 hover:border-white/20 hover:text-foreground/60"
+              className="px-5 py-3 rounded-full border border-white/10 text-foreground/40 font-heading text-sm tracking-wider transition-all duration-200 hover:border-white/20 hover:text-foreground/60"
             >
               CLEAR
             </button>
           </div>
+
+          {/* Score probability below buttons */}
+          {scoreProbability !== null && (
+            <div className="relative z-10 flex flex-col items-center">
+              <span className="text-foreground/30 text-[10px] font-noto uppercase tracking-widest">Score Probability</span>
+              <span
+                className="font-heading text-3xl"
+                style={{ color: "#ffd700", textShadow: "0 0 16px rgba(255, 215, 0, 0.4)" }}
+              >
+                {(scoreProbability * 100).toFixed(1)}%
+              </span>
+            </div>
+          )}
         </section>
       )}
     </>

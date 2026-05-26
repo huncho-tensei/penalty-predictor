@@ -100,6 +100,16 @@ export function TakerSideStats({ player, opponent }: { player: Player; opponent:
         <span className="font-heading text-sm">{player.penaltiesTaken ?? "—"}</span>
       </div>
 
+      <div className="flex justify-between text-foreground/40">
+        <span className="text-[10px] font-noto uppercase tracking-wider">Conversion</span>
+        <span className="font-heading text-sm text-teal">{conv ? `${(conv * 100).toFixed(0)}%` : "—"}</span>
+      </div>
+
+      <div className="flex justify-between text-foreground/40">
+        <span className="text-[10px] font-noto uppercase tracking-wider">Source</span>
+        <span className="font-heading text-[11px]">{player.source === "verified" ? "Verified" : "Derived"}</span>
+      </div>
+
       {fact && (
         <div className="mt-1 pt-3 border-t border-white/5">
           <span className="text-[9px] font-noto uppercase tracking-wider text-teal/60">Did you know?</span>
@@ -152,8 +162,18 @@ export function KeeperSideStats({ player, opponent }: { player: Player; opponent
       </div>
 
       <div className="flex justify-between text-foreground/40">
+        <span className="text-[10px] font-noto uppercase tracking-wider">Save Rate</span>
+        <span className="font-heading text-sm text-coral">{saveRate ? `${(saveRate * 100).toFixed(0)}%` : "—"}</span>
+      </div>
+
+      <div className="flex justify-between text-foreground/40">
         <span className="text-[10px] font-noto uppercase tracking-wider">Multiplier</span>
         <span className="font-heading text-sm" style={{ color: mult > 1.5 ? "#ff6b6b" : "inherit" }}>{mult.toFixed(2)}x</span>
+      </div>
+
+      <div className="flex justify-between text-foreground/40">
+        <span className="text-[10px] font-noto uppercase tracking-wider">Source</span>
+        <span className="font-heading text-[11px]">{player.source === "verified" ? "Verified" : "Derived"}</span>
       </div>
 
       {fact && (

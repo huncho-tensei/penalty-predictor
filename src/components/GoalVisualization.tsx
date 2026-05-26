@@ -12,11 +12,11 @@ type GoalVisualizationProps = {
 };
 
 const W = 560;
-const H = 310;
+const H = 290;
 const GOAL_X = 50;
-const GOAL_Y = 40;
+const GOAL_Y = 30;
 const GOAL_W = 460;
-const GOAL_H = 210;
+const GOAL_H = 200;
 const POST = 7;
 
 const HEX_SIZE = 40;
@@ -137,9 +137,9 @@ export default function GoalVisualization({
       {/* Floodlight wash */}
       <rect x={0} y={0} width={W} height={H} fill="url(#floodlight)" />
 
-      {/* Grass floor */}
-      <rect x={10} y={GOAL_Y + GOAL_H} width={W - 20} height={60} fill="url(#grass)" />
-      <line x1={20} y1={GOAL_Y + GOAL_H + 1} x2={W - 20} y2={GOAL_Y + GOAL_H + 1} stroke="#2d6b2d" strokeWidth={1.5} opacity={0.6} />
+      {/* Grass floor — aligned to goal width */}
+      <rect x={GOAL_X - 10} y={GOAL_Y + GOAL_H} width={GOAL_W + 20} height={50} fill="url(#grass)" />
+      <line x1={GOAL_X - 10} y1={GOAL_Y + GOAL_H + 1} x2={GOAL_X + GOAL_W + 10} y2={GOAL_Y + GOAL_H + 1} stroke="#2d6b2d" strokeWidth={1.5} opacity={0.6} />
 
       {/* Goal interior — dark depth */}
       <rect
@@ -212,7 +212,7 @@ export default function GoalVisualization({
       <ellipse cx={GOAL_X + GOAL_W - 3.5} cy={GOAL_Y + GOAL_H + 1} rx={5} ry={2} fill="rgba(255,255,255,0.15)" />
 
       {/* Penalty spot */}
-      <circle cx={W / 2} cy={GOAL_Y + GOAL_H + 35} r={3} fill="white" opacity={0.3} />
+      <circle cx={W / 2} cy={GOAL_Y + GOAL_H + 25} r={3} fill="white" opacity={0.3} />
     </svg>
   );
 }
