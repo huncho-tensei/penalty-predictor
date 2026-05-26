@@ -4,33 +4,24 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import quotes from "@/data/quotes.json";
 
-type FootballerQuoteProps = {
-  minimized: boolean;
-};
-
-export default function FootballerQuote({ minimized }: FootballerQuoteProps) {
+export default function FootballerQuote({ minimized }: { minimized: boolean }) {
   const [quote, setQuote] = useState(quotes[0]);
 
   useEffect(() => {
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
   }, []);
 
+  if (minimized) return null;
+
   return (
     <motion.div
-      layout
-      className={`font-noto italic text-foreground/40 ${
-        minimized
-          ? "fixed bottom-4 right-4 max-w-[250px] text-xs text-right"
-          : "max-w-[500px] text-center text-sm mt-4"
-      }`}
-      transition={{ layout: { duration: 0.6, ease: "easeInOut" } }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 0.5 }}
+      className="max-w-[480px] text-center font-noto italic text-foreground/35 text-sm"
     >
-      <motion.p layout="position">
-        &ldquo;{quote.text}&rdquo;
-      </motion.p>
-      <motion.p layout="position" className="text-foreground/25 mt-1 not-italic">
-        — {quote.author}
-      </motion.p>
+      <p>&ldquo;{quote.text}&rdquo;</p>
+      <p className="text-foreground/20 mt-1 not-italic">— {quote.author}</p>
     </motion.div>
   );
 }

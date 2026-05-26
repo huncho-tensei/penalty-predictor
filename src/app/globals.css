@@ -73,9 +73,13 @@ body::after {
   filter: blur(30px);
 }
 
-main {
+main, section {
   position: relative;
   z-index: 1;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @keyframes heartbeat {
