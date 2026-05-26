@@ -253,7 +253,7 @@ export default function Home() {
 
           {/* Goal + Side Stats */}
           <div className="relative z-10 flex items-center justify-center gap-6 w-full">
-            <TakerSideStats player={taker} />
+            <TakerSideStats player={taker} opponent={keeper} />
 
             <div className="relative w-full max-w-[640px]">
               <GoalVisualization
@@ -270,7 +270,7 @@ export default function Home() {
               </svg>
             </div>
 
-            <KeeperSideStats player={keeper} />
+            <KeeperSideStats player={keeper} opponent={taker} />
           </div>
 
           {/* Result — broadcast lower-third */}
