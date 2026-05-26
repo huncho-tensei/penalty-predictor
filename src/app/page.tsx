@@ -6,7 +6,7 @@ import type { Player, PressureMode, PenaltyDot, SimulationResult } from "@/lib/t
 import { calculateScoreProbability } from "@/lib/probability";
 import { simulatePenalty } from "@/lib/simulation";
 import MatchupSelector from "@/components/MatchupSelector";
-import GoalVisualization from "@/components/GoalVisualization";
+import GoalVisualization, { SVG_W, SVG_H } from "@/components/GoalVisualization";
 import PenaltyAnimation from "@/components/PenaltyAnimation";
 import ResultDisplay from "@/components/ResultDisplay";
 import PlayerStats from "@/components/PlayerStats";
@@ -79,47 +79,69 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center min-h-screen px-4 py-8 gap-6">
+    <main className="flex flex-col items-center min-h-screen px-4 py-10 gap-8">
       {/* Title */}
-      <div className="text-center">
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <h1
-          className="font-heading text-5xl text-gold tracking-wide"
-          style={{ WebkitTextStroke: "2.5px #ffd700", paintOrder: "stroke fill" }}
+          className="font-heading text-5xl sm:text-6xl text-gold tracking-wide"
+          style={{
+            WebkitTextStroke: "2.5px #ffd700",
+            paintOrder: "stroke fill",
+            textShadow: "0 0 40px rgba(255, 215, 0, 0.2)",
+          }}
         >
           PENALTY SHOOTOUT PREDICTOR
         </h1>
-        <p className="font-heading text-2xl text-foreground/50 mt-1 tracking-widest">
+        <p className="font-heading text-xl sm:text-2xl text-foreground/40 mt-2 tracking-[0.3em]">
           FIFA WORLD CUP 2026
         </p>
-      </div>
+      </motion.div>
 
       {/* Quote */}
       <FootballerQuote minimized={hasSelection} />
 
       {/* Matchup Selector */}
-      <MatchupSelector
-        selectedTaker={taker}
-        selectedKeeper={keeper}
-        onTakerChange={setTaker}
-        onKeeperChange={setKeeper}
-        onRandomise={handleRandomise}
-      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        <MatchupSelector
+          selectedTaker={taker}
+          selectedKeeper={keeper}
+          onTakerChange={setTaker}
+          onKeeperChange={setKeeper}
+          onRandomise={handleRandomise}
+        />
+      </motion.div>
 
-      {/* Progressive reveal: everything below appears on selection */}
+      {/* Progressive reveal */}
       <AnimatePresence>
         {hasSelection && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="flex flex-col items-center gap-6 w-full"
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center gap-8 w-full"
           >
+            {/* Player names */}
+            <div className="flex items-center gap-4 font-heading text-2xl tracking-wider">
+              <span className="text-teal">{taker.name}</span>
+              <span className="text-foreground/20">vs</span>
+              <span className="text-coral">{keeper.name}</span>
+            </div>
+
             {/* Pressure Toggle */}
             <PressureToggle value={pressure} onChange={setPressure} />
 
             {/* Goal Visualization */}
-            <div className="relative w-full max-w-[600px]">
+            <div className="relative w-full max-w-[640px]">
               <GoalVisualization
                 taker={taker}
                 keeper={keeper}
@@ -127,15 +149,17 @@ export default function Home() {
                 showOverlay={true}
               />
               <svg
-                viewBox="0 0 540 300"
-                className="absolute inset-0 w-full pointer-events-none"
+                viewBox={`0 0 ${SVG_W} ${SVG_H + 40}`}
+                className="absolute inset-0 w-full h-full pointer-events-none"
               >
                 <PenaltyAnimation result={result} isPlaying={isPlaying} />
               </svg>
             </div>
 
             {/* Result */}
-            <ResultDisplay outcome={result?.outcome ?? null} visible={showResult} />
+            <div className="min-h-[80px] flex items-center justify-center">
+              <ResultDisplay outcome={result?.outcome ?? null} visible={showResult} />
+            </div>
 
             {/* Stats */}
             <PlayerStats
@@ -145,17 +169,17 @@ export default function Home() {
             />
 
             {/* Action buttons */}
-            <div className="flex gap-3">
+            <div className="flex gap-4 mt-2">
               <button
                 onClick={handleTakePenalty}
                 disabled={isPlaying}
-                className="px-8 py-3 rounded-full bg-purple text-white font-heading text-xl tracking-wider transition-all duration-200 hover:shadow-[0_0_20px_rgba(156,39,176,0.5)] hover:bg-purple-dim disabled:opacity-40 disabled:cursor-not-allowed"
+                className="btn-primary px-10 py-4 rounded-full bg-purple text-white font-heading text-2xl tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 TAKE PENALTY
               </button>
               <button
                 onClick={handleClear}
-                className="px-5 py-3 rounded-full bg-white/5 text-foreground/50 font-heading text-xl tracking-wider transition-all duration-200 hover:bg-white/10 hover:text-foreground/70"
+                className="px-6 py-4 rounded-full border border-white/10 text-foreground/40 font-heading text-lg tracking-wider transition-all duration-200 hover:border-white/20 hover:text-foreground/60"
               >
                 CLEAR
               </button>

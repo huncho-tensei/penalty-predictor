@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, Noto_Sans } from "next/font/google";
+import { Bebas_Neue, Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const barlowCondensed = Barlow_Condensed({
-  weight: ["400", "600", "700", "800"],
+const bebasNeue = Bebas_Neue({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-barlow",
+  variable: "--font-heading",
 });
 
 const notoSans = Noto_Sans({
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${barlowCondensed.variable} ${notoSans.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${notoSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-noto">
         {children}
