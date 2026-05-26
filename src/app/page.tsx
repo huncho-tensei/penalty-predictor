@@ -156,8 +156,8 @@ export default function Home() {
               </svg>
             </div>
 
-            {/* Result */}
-            <div className="min-h-[80px] flex items-center justify-center">
+            {/* Result — broadcast lower-third */}
+            <div className="min-h-[60px] w-full max-w-[640px]">
               <ResultDisplay outcome={result?.outcome ?? null} visible={showResult} />
             </div>
 
@@ -173,7 +173,7 @@ export default function Home() {
               <button
                 onClick={handleTakePenalty}
                 disabled={isPlaying}
-                className="btn-primary px-10 py-4 rounded-full bg-purple text-white font-heading text-2xl tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
+                className="btn-heartbeat px-10 py-4 rounded-full bg-purple text-white font-heading text-2xl tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 TAKE PENALTY
               </button>

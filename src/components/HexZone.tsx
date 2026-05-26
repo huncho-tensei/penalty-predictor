@@ -31,100 +31,83 @@ export default function HexZone({
   size,
   showOverlay,
 }: HexZoneProps) {
-  const points = hexPoints(cx, cy, size);
-  const innerPoints = hexPoints(cx, cy, size - 3);
-  const isHot = takerProb >= 0.25;
-  const takerAlpha = Math.max(0.08, Math.min(0.7, takerProb * 2));
-  const keeperAlpha = Math.max(0.08, Math.min(0.5, keeperProb * 2));
-  const glowIntensity = isHot ? takerProb * 8 : 0;
-  const uniqueId = `hex-${zone}`;
+  const outerPts = hexPoints(cx, cy, size);
+  const innerPts = hexPoints(cx, cy, size - 2);
+  const isHot = takerProb >= 0.20;
+  const takerAlpha = Math.max(0.06, Math.min(0.65, takerProb * 2.2));
+  const keeperAlpha = Math.max(0.06, Math.min(0.45, keeperProb * 2));
+  const uid = `hz-${zone}`;
 
   return (
-    <g>
+    <g className={isHot ? "hex-hot" : ""}>
       <defs>
-        <radialGradient id={`${uniqueId}-taker`} cx="40%" cy="35%">
-          <stop offset="0%" stopColor={`rgba(0, 220, 255, ${takerAlpha * 1.3})`} />
-          <stop offset="100%" stopColor={`rgba(0, 140, 170, ${takerAlpha * 0.4})`} />
+        <radialGradient id={`${uid}-t`} cx="40%" cy="30%">
+          <stop offset="0%" stopColor={`rgba(0, 230, 255, ${takerAlpha * 1.4})`} />
+          <stop offset="70%" stopColor={`rgba(0, 150, 180, ${takerAlpha * 0.5})`} />
+          <stop offset="100%" stopColor={`rgba(0, 80, 100, ${takerAlpha * 0.15})`} />
         </radialGradient>
-        <radialGradient id={`${uniqueId}-keeper`} cx="60%" cy="65%">
-          <stop offset="0%" stopColor={`rgba(255, 100, 100, ${keeperAlpha * 1.2})`} />
-          <stop offset="100%" stopColor={`rgba(200, 40, 40, ${keeperAlpha * 0.3})`} />
+        <radialGradient id={`${uid}-k`} cx="60%" cy="70%">
+          <stop offset="0%" stopColor={`rgba(255, 110, 110, ${keeperAlpha * 1.3})`} />
+          <stop offset="100%" stopColor={`rgba(180, 40, 40, ${keeperAlpha * 0.2})`} />
         </radialGradient>
-        {isHot && (
-          <filter id={`${uniqueId}-glow`} x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation={glowIntensity} result="blur" />
-            <feFlood floodColor="#00bcd4" floodOpacity="0.3" result="color" />
-            <feComposite in="color" in2="blur" operator="in" result="glow" />
-            <feMerge>
-              <feMergeNode in="glow" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        )}
       </defs>
 
-      {/* Outer border glow */}
+      {/* Outer edge — faint border */}
       <motion.polygon
-        points={points}
+        points={outerPts}
         fill="none"
-        stroke="rgba(0, 188, 212, 0.15)"
-        strokeWidth={2}
+        stroke={isHot ? "rgba(0, 220, 255, 0.2)" : "rgba(255, 255, 255, 0.06)"}
+        strokeWidth={1.5}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.4 }}
       />
 
       {/* Taker fill */}
       <motion.polygon
-        points={innerPoints}
-        fill={`url(#${uniqueId}-taker)`}
-        stroke="rgba(0, 188, 212, 0.25)"
-        strokeWidth={1}
-        filter={isHot ? `url(#${uniqueId}-glow)` : undefined}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        style={{ transformOrigin: `${cx}px ${cy}px` }}
+        points={innerPts}
+        fill={`url(#${uid}-t)`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       />
 
       {/* Keeper overlay */}
       {showOverlay && (
         <motion.polygon
-          points={innerPoints}
-          fill={`url(#${uniqueId}-keeper)`}
-          stroke="rgba(255, 107, 107, 0.2)"
-          strokeWidth={1}
+          points={innerPts}
+          fill={`url(#${uid}-k)`}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
+          animate={{ opacity: 0.55 }}
           transition={{ duration: 0.3, delay: 0.4 }}
         />
       )}
 
-      {/* Taker percentage */}
+      {/* Taker % */}
       <text
         x={cx}
-        y={cy - 4}
+        y={cy - 3}
         textAnchor="middle"
         fill="white"
-        fontSize={12}
+        fontSize={isHot ? 13 : 11}
         fontWeight="bold"
         fontFamily="var(--font-heading)"
-        style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8)" }}
+        style={{ textShadow: "0 1px 4px rgba(0,0,0,0.9)" }}
       >
         {(takerProb * 100).toFixed(0)}%
       </text>
 
-      {/* Keeper percentage */}
+      {/* Keeper % */}
       {showOverlay && (
         <text
           x={cx}
-          y={cy + 12}
+          y={cy + 13}
           textAnchor="middle"
           fill="#ff6b6b"
           fontSize={9}
           fontFamily="var(--font-noto)"
-          opacity={0.8}
-          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.6)" }}
+          opacity={0.75}
+          style={{ textShadow: "0 1px 3px rgba(0,0,0,0.7)" }}
         >
           {(keeperProb * 100).toFixed(0)}%
         </text>
