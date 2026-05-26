@@ -9,7 +9,7 @@ type PenaltyAnimationProps = {
   isPlaying: boolean;
 };
 
-const BALL_START = { x: SVG_W / 2, y: 330 };
+const BALL_START = { x: SVG_W / 2, y: GOAL_BOUNDS.y + GOAL_BOUNDS.h + 25 };
 
 const MISS_TARGETS: Record<string, { x: number; y: number }> = {
   "left-post":  { x: GOAL_BOUNDS.x - 3, y: GOAL_BOUNDS.y + GOAL_BOUNDS.h * 0.5 },
