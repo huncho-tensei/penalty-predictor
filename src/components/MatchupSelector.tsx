@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { Player, Team } from "@/lib/types";
 import teams from "@/data/teams.json";
 import players from "@/data/players.json";
@@ -21,30 +21,37 @@ const confederationOrder = ["UEFA", "CONMEBOL", "CONCACAF", "AFC", "CAF", "OFC"]
 function groupTeamsByConfederation(teamList: Team[]) {
   const grouped: Record<string, Team[]> = {};
   for (const conf of confederationOrder) {
-    grouped[conf] = teamList.filter((t) => t.confederation === conf).sort((a, b) => a.name.localeCompare(b.name));
+    grouped[conf] = teamList
+      .filter((t) => t.confederation === conf)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
   return grouped;
 }
 
+const grouped = groupTeamsByConfederation(typedTeams);
+
 function PlayerDropdown({
   label,
   role,
-  selectedTeamCode,
   selectedPlayer,
-  onTeamChange,
   onPlayerChange,
 }: {
   label: string;
   role: "taker" | "keeper";
-  selectedTeamCode: string;
   selectedPlayer: Player | null;
-  onTeamChange: (code: string) => void;
   onPlayerChange: (player: Player | null) => void;
 }) {
-  const grouped = useMemo(() => groupTeamsByConfederation(typedTeams), []);
+  const [teamCode, setTeamCode] = useState(selectedPlayer?.teamCode ?? "");
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      setTeamCode(selectedPlayer.teamCode);
+    }
+  }, [selectedPlayer]);
+
   const availablePlayers = useMemo(
-    () => typedPlayers.filter((p) => p.teamCode === selectedTeamCode && p.role === role),
-    [selectedTeamCode, role]
+    () => typedPlayers.filter((p) => p.teamCode === teamCode && p.role === role),
+    [teamCode, role]
   );
 
   return (
@@ -54,9 +61,9 @@ function PlayerDropdown({
       </span>
       <div className="flex gap-2">
         <select
-          value={selectedTeamCode}
+          value={teamCode}
           onChange={(e) => {
-            onTeamChange(e.target.value);
+            setTeamCode(e.target.value);
             onPlayerChange(null);
           }}
           className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none focus:border-purple appearance-none cursor-pointer"
@@ -76,10 +83,11 @@ function PlayerDropdown({
         <select
           value={selectedPlayer?.id ?? ""}
           onChange={(e) => {
-            const player = typedPlayers.find((p) => p.id === e.target.value) ?? null;
+            const player =
+              typedPlayers.find((p) => p.id === e.target.value) ?? null;
             onPlayerChange(player);
           }}
-          disabled={!selectedTeamCode}
+          disabled={!teamCode}
           className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none focus:border-purple appearance-none cursor-pointer disabled:opacity-30"
         >
           <option value="">Select player</option>
@@ -101,17 +109,12 @@ export default function MatchupSelector({
   onKeeperChange,
   onRandomise,
 }: MatchupSelectorProps) {
-  const takerTeamCode = selectedTaker?.teamCode ?? "";
-  const keeperTeamCode = selectedKeeper?.teamCode ?? "";
-
   return (
     <div className="flex flex-col items-center gap-4">
       <PlayerDropdown
         label="Penalty Taker"
         role="taker"
-        selectedTeamCode={takerTeamCode}
         selectedPlayer={selectedTaker}
-        onTeamChange={() => onTakerChange(null)}
         onPlayerChange={onTakerChange}
       />
 
@@ -125,9 +128,7 @@ export default function MatchupSelector({
       <PlayerDropdown
         label="Goalkeeper"
         role="keeper"
-        selectedTeamCode={keeperTeamCode}
         selectedPlayer={selectedKeeper}
-        onTeamChange={() => onKeeperChange(null)}
         onPlayerChange={onKeeperChange}
       />
     </div>
