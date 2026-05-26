@@ -191,6 +191,16 @@ export default function Home() {
           )}
         </AnimatePresence>
 
+        {/* GitHub credit */}
+        <a
+          href="https://github.com/huncho-tensei"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-14 font-noto text-[11px] text-foreground/20 hover:text-foreground/40 transition-colors duration-200 tracking-wider"
+        >
+          built by <span className="text-foreground/30 hover:text-purple">@huncho-tensei</span>
+        </a>
+
         {/* Scroll hint */}
         {matchupConfirmed && (
           <motion.div
