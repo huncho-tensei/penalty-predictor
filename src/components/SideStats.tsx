@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { getTeamColor } from "@/lib/team-colors";
@@ -55,7 +56,7 @@ function ComparisonBar({
 
 export function TakerSideStats({ player, opponent }: { player: Player; opponent: Player }) {
   const teamColor = getTeamColor(player.teamCode);
-  const fact = getRandomFact(player.id);
+  const fact = useMemo(() => getRandomFact(player.id), [player.id]);
   const conv = player.conversionRate ?? 0.80;
   const saveRate = opponent.saveRate ?? 0.17;
 
@@ -111,7 +112,7 @@ export function TakerSideStats({ player, opponent }: { player: Player; opponent:
 
 export function KeeperSideStats({ player, opponent }: { player: Player; opponent: Player }) {
   const teamColor = getTeamColor(player.teamCode);
-  const fact = getRandomFact(player.id);
+  const fact = useMemo(() => getRandomFact(player.id), [player.id]);
   const saveRate = player.saveRate ?? 0.17;
   const mult = saveRate / 0.17;
 

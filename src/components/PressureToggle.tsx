@@ -15,7 +15,8 @@ const MODES: { key: PressureMode; label: string; sub: string }[] = [
 
 export default function PressureToggle({ value, onChange }: PressureToggleProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-3">
+      <span className="font-heading text-xs tracking-[0.15em] text-foreground/25 uppercase hidden sm:block">Pressure</span>
       {MODES.map((mode) => (
         <button
           key={mode.key}
