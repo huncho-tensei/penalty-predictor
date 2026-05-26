@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { Player, PressureMode, PenaltyDot, SimulationResult } from "@/lib/types";
 import { calculateScoreProbability } from "@/lib/probability";
 import { simulatePenalty } from "@/lib/simulation";
-import MatchupSelector from "@/components/MatchupSelector";
+import MatchupSelector, { getTeamFlag } from "@/components/MatchupSelector";
 import GoalVisualization, { SVG_W, SVG_H } from "@/components/GoalVisualization";
 import PenaltyAnimation from "@/components/PenaltyAnimation";
 import ResultDisplay from "@/components/ResultDisplay";
@@ -130,12 +130,19 @@ export default function Home() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center gap-8 w-full"
           >
-            {/* Player names */}
-            <div className="flex items-center gap-4 font-heading text-2xl tracking-wider">
-              <span className="text-teal">{taker.name}</span>
-              <span className="text-foreground/20">vs</span>
-              <span className="text-coral">{keeper.name}</span>
+            {/* Player names — fight card style */}
+            <div className="flex items-center gap-4 sm:gap-6">
+              <div className="flex items-center gap-2">
+                <span className="text-3xl">{getTeamFlag(taker.teamCode)}</span>
+                <span className="font-heading text-2xl sm:text-3xl tracking-wider text-teal">{taker.name}</span>
+              </div>
+              <span className="font-heading text-lg text-foreground/15 tracking-widest">VS</span>
+              <div className="flex items-center gap-2">
+                <span className="font-heading text-2xl sm:text-3xl tracking-wider text-coral">{keeper.name}</span>
+                <span className="text-3xl">{getTeamFlag(keeper.teamCode)}</span>
+              </div>
             </div>
+            <div className="w-full max-w-[400px] h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
 
             {/* Pressure Toggle */}
             <PressureToggle value={pressure} onChange={setPressure} />

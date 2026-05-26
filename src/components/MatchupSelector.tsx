@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import type { Player, Team } from "@/lib/types";
+import { getTeamColor } from "@/lib/team-colors";
 import teams from "@/data/teams.json";
 import players from "@/data/players.json";
 
@@ -30,6 +31,12 @@ function groupTeamsByConfederation(teamList: Team[]) {
 
 const grouped = groupTeamsByConfederation(typedTeams);
 
+const teamByCode = Object.fromEntries(typedTeams.map((t) => [t.code, t]));
+
+export function getTeamFlag(code: string): string {
+  return teamByCode[code]?.flag ?? "";
+}
+
 function PlayerDropdown({
   label,
   role,
@@ -54,6 +61,8 @@ function PlayerDropdown({
     [teamCode, role]
   );
 
+  const borderColor = teamCode ? getTeamColor(teamCode) : "rgba(255,255,255,0.1)";
+
   return (
     <div className="flex flex-col items-center gap-2">
       <span className="font-heading text-lg tracking-widest text-foreground/40 uppercase">
@@ -66,7 +75,11 @@ function PlayerDropdown({
             setTeamCode(e.target.value);
             onPlayerChange(null);
           }}
-          className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none focus:border-purple appearance-none cursor-pointer"
+          style={{
+            borderColor: borderColor,
+            boxShadow: teamCode ? `0 0 8px ${borderColor}40` : "none",
+          }}
+          className="bg-white/5 border-2 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none appearance-none cursor-pointer transition-all duration-300"
         >
           <option value="">Select team</option>
           {Object.entries(grouped).map(([conf, confTeams]) => (
@@ -88,7 +101,11 @@ function PlayerDropdown({
             onPlayerChange(player);
           }}
           disabled={!teamCode}
-          className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none focus:border-purple appearance-none cursor-pointer disabled:opacity-30"
+          style={{
+            borderColor: selectedPlayer ? borderColor : "rgba(255,255,255,0.1)",
+            boxShadow: selectedPlayer ? `0 0 8px ${borderColor}40` : "none",
+          }}
+          className="bg-white/5 border-2 rounded-full px-4 py-2 text-sm font-noto text-foreground focus:outline-none appearance-none cursor-pointer disabled:opacity-30 transition-all duration-300"
         >
           <option value="">Select player</option>
           {availablePlayers.map((p) => (
