@@ -67,7 +67,7 @@
   "averageMissRate": 0.15,
   "pressureModes": {
     "regular": { "missRateModifier": 0, "keeperModifier": 0 },
-    "early": { "missRateModifier": 0.02, "keeperModifier": 0.05 },
-    "decisive": { "missRateModifier": 0.08, "keeperModifier": 0.15 }
+    "early": { "missRateModifier": 0.03, "keeperModifier": 0.05 },
+    "decisive": { "missRateModifier": 0.12, "keeperModifier": 0.20 }
   }
 }
