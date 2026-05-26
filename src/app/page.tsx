@@ -12,6 +12,7 @@ import ResultDisplay from "@/components/ResultDisplay";
 import PlayerStats from "@/components/PlayerStats";
 import PressureToggle from "@/components/PressureToggle";
 import FootballerQuote from "@/components/FootballerQuote";
+import { TakerSideStats, KeeperSideStats } from "@/components/SideStats";
 import players from "@/data/players.json";
 
 const typedPlayers = players as Player[];
@@ -47,6 +48,7 @@ export default function Home() {
     }
     setTaker(randomTaker);
     setKeeper(randomKeeper);
+    setMatchupConfirmed(false);
     setResult(null);
     setShowResult(false);
     setDots([]);
@@ -64,13 +66,13 @@ export default function Home() {
   }, [hasSelection]);
 
   const handleReselect = useCallback(() => {
-    setMatchupConfirmed(false);
     setResult(null);
     setShowResult(false);
     setDots([]);
+    selectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     setTimeout(() => {
-      selectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
+      setMatchupConfirmed(false);
+    }, 700);
   }, []);
 
   const handleTakePenalty = useCallback(() => {
@@ -249,20 +251,26 @@ export default function Home() {
             <PressureToggle value={pressure} onChange={setPressure} />
           </div>
 
-          {/* Goal Visualization */}
-          <div className="relative z-10 w-full max-w-[640px]">
-            <GoalVisualization
-              taker={taker}
-              keeper={keeper}
-              dots={dots}
-              showOverlay={true}
-            />
-            <svg
-              viewBox={`0 0 ${SVG_W} ${SVG_H + 40}`}
-              className="absolute inset-0 w-full h-full pointer-events-none"
-            >
-              <PenaltyAnimation result={result} isPlaying={isPlaying} />
-            </svg>
+          {/* Goal + Side Stats */}
+          <div className="relative z-10 flex items-center justify-center gap-6 w-full">
+            <TakerSideStats player={taker} />
+
+            <div className="relative w-full max-w-[640px]">
+              <GoalVisualization
+                taker={taker}
+                keeper={keeper}
+                dots={dots}
+                showOverlay={true}
+              />
+              <svg
+                viewBox={`0 0 ${SVG_W} ${SVG_H + 40}`}
+                className="absolute inset-0 w-full h-full pointer-events-none"
+              >
+                <PenaltyAnimation result={result} isPlaying={isPlaying} />
+              </svg>
+            </div>
+
+            <KeeperSideStats player={keeper} />
           </div>
 
           {/* Result — broadcast lower-third */}
