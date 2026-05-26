@@ -1,0 +1,73 @@
+{
+  "sources": [
+    "PLOS One 2024 - Penalty shootouts alternating order study",
+    "ResearchGate - Penalty height-category save rates",
+    "Northwestern Sports Analytics - World Cup penalty data",
+    "Bruin Sports Analytics - Penalty placement math",
+    "MDPI Symmetry 2025 - Laterality and shot direction in elite football"
+  ],
+  "takerDefaults": {
+    "rightFoot": {
+      "zones": {
+        "topLeft": 0.14,
+        "topCenter": 0.04,
+        "topRight": 0.10,
+        "bottomLeft": 0.38,
+        "bottomCenter": 0.06,
+        "bottomRight": 0.28
+      },
+      "notes": "Right-footers favour bottom-left (natural side) ~38%. Data from MDPI laterality study + Bruin Sports Analytics."
+    },
+    "leftFoot": {
+      "zones": {
+        "topLeft": 0.10,
+        "topCenter": 0.04,
+        "topRight": 0.14,
+        "bottomLeft": 0.28,
+        "bottomCenter": 0.06,
+        "bottomRight": 0.38
+      },
+      "notes": "Left-footers mirror right-foot distribution. Natural side is bottom-right ~38%."
+    }
+  },
+  "keeperDefaults": {
+    "rightHanded": {
+      "zones": {
+        "topLeft": 0.08,
+        "topCenter": 0.02,
+        "topRight": 0.10,
+        "bottomLeft": 0.35,
+        "bottomCenter": 0.15,
+        "bottomRight": 0.30
+      },
+      "notes": "Keepers favour diving low. Slight bias to their left (taker's right). ResearchGate dive direction study."
+    },
+    "leftHanded": {
+      "zones": {
+        "topLeft": 0.10,
+        "topCenter": 0.02,
+        "topRight": 0.08,
+        "bottomLeft": 0.30,
+        "bottomCenter": 0.15,
+        "bottomRight": 0.35
+      },
+      "notes": "Mirror of right-handed distribution."
+    }
+  },
+  "zoneSaveDifficulty": {
+    "topLeft": 0.08,
+    "topCenter": 0.12,
+    "topRight": 0.08,
+    "bottomLeft": 0.30,
+    "bottomCenter": 0.40,
+    "bottomRight": 0.30,
+    "notes": "Base save chance when keeper dives to correct zone. Upper third ~9.1% per PLOS One. Medium height ~33.5%."
+  },
+  "averageKeeperSaveRate": 0.17,
+  "averageMissRate": 0.15,
+  "pressureModes": {
+    "regular": { "missRateModifier": 0, "keeperModifier": 0 },
+    "early": { "missRateModifier": 0.02, "keeperModifier": 0.05 },
+    "decisive": { "missRateModifier": 0.08, "keeperModifier": 0.15 }
+  }
+}
