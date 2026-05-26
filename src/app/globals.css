@@ -36,13 +36,13 @@ body {
   background: var(--background);
   background-image:
     /* Left floodlight beam */
-    linear-gradient(125deg, rgba(255, 200, 80, 0.04) 0%, transparent 35%),
+    linear-gradient(130deg, rgba(255, 200, 80, 0.08) 0%, transparent 30%),
     /* Right floodlight beam */
-    linear-gradient(235deg, rgba(255, 200, 80, 0.04) 0%, transparent 35%),
+    linear-gradient(230deg, rgba(255, 200, 80, 0.08) 0%, transparent 30%),
     /* Top center warm wash */
-    radial-gradient(ellipse 100% 50% at 50% -5%, rgba(255, 180, 50, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 45% at 50% -5%, rgba(255, 180, 50, 0.09) 0%, transparent 50%),
     /* Grass tint at bottom */
-    radial-gradient(ellipse 80% 40% at 50% 105%, rgba(30, 80, 30, 0.06) 0%, transparent 40%);
+    radial-gradient(ellipse 80% 40% at 50% 105%, rgba(30, 80, 30, 0.08) 0%, transparent 40%);
   color: var(--foreground);
   min-height: 100vh;
   overflow-x: hidden;
@@ -52,23 +52,25 @@ body::before,
 body::after {
   content: "";
   position: fixed;
-  top: -10%;
-  width: 200px;
-  height: 140%;
+  top: -20%;
+  width: 350px;
+  height: 160%;
   pointer-events: none;
   z-index: 0;
 }
 
 body::before {
-  left: -60px;
-  background: linear-gradient(160deg, rgba(255, 210, 80, 0.03) 0%, transparent 60%);
-  transform: skewX(-8deg);
+  left: -100px;
+  background: linear-gradient(155deg, rgba(255, 200, 60, 0.07) 0%, rgba(255, 180, 40, 0.03) 30%, transparent 55%);
+  transform: skewX(-10deg);
+  filter: blur(30px);
 }
 
 body::after {
-  right: -60px;
-  background: linear-gradient(200deg, rgba(255, 210, 80, 0.03) 0%, transparent 60%);
-  transform: skewX(8deg);
+  right: -100px;
+  background: linear-gradient(205deg, rgba(255, 200, 60, 0.07) 0%, rgba(255, 180, 40, 0.03) 30%, transparent 55%);
+  transform: skewX(10deg);
+  filter: blur(30px);
 }
 
 main {
